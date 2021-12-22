@@ -46,6 +46,6 @@ app.post("/recipe", (req, res) => {
 app.delete("/delete/:id", (req, res) => {
   remove.handlerDelete(req, res, db);
 });
-app.listen(4001, () => {
-  console.log(`app is running on port 4000`);
+app.listen(process.env.PORT || 4000, () => {
+  console.log(`app is running on port ${process.env.PORT}`);
 });
