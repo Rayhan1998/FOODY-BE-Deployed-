@@ -23,8 +23,8 @@ const db = require("knex")({
   }
 });
 
-app.get("/", (res, req) => {
-  res.send("Its working");
+app.get("/", (req, res) => {
+  res.status(200).send("Its working");
 });
 
 app.get("/savedrecipe/:email", (req, res) => {
