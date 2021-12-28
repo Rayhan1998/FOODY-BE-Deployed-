@@ -2,11 +2,15 @@ const express = require("express");
 
 const cors = require("cors");
 const app = express();
+const axios = require("axios");
+const fetch = require("node-fetch");
 app.use(express.json());
 app.use(cors());
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const API_KEY = process.env.APIKEY;
+require("dotenv").config();
 
 const register = require("./controllers/register");
 const signin = require("./controllers/signin");
@@ -35,6 +39,40 @@ app.get("/savedrecipe/:email", (req, res) => {
       res.send(data);
     });
 });
+
+// app.get("/searchrecipe/:query", async (req, res) => {
+//   try {
+//     const response = await axios.get(
+//       `https://api.edamam.com/api/recipes/v2?type=public&q=${req.params.query}&app_id=1f1fe157&app_key=adf65b2d88f6b6e7d91211344c5b19a4`
+//     );
+//     console.log(req.params);
+//     res.status(200).json(response);
+//   } catch (error) {
+//     console.log(req.params);
+//     res.status(400).send(error);
+//   }
+// });
+
+// app.get("/searchrecipe/:query", (req, res) => {
+//   axios
+//     .get(
+//       `https://api.edamam.com/api/recipes/v2?type=public&q=pizza&app_id=1f1fe157&app_key=adf65b2d88f6b6e7d91211344c5b19a4`
+//     )
+//     .then(data => res.json(data.data.hits))
+//     .catch(err => res.send(err));
+// });
+
+app.get("/searchrecipe/:query", (req, res) => {
+  fetch(
+    `https://api.edamam.com/api/recipes/v2?type=public&q=${req.params.query}&app_id=1f1fe157&app_key=${process.env.APIKEY}`
+  )
+    .then(response => response.json())
+    .then(data => {
+      res.status(200).send(data);
+    })
+    .catch(err => res.status(400).send(err));
+});
+
 app.post("/signin", (req, res) => {
   signin.signin(req, res, db, bcrypt);
 });
