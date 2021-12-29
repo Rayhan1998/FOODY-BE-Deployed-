@@ -88,6 +88,18 @@ app.get("/findcuisine/:foodtype", (req, res) => {
     .catch(err => res.status(400).send(err));
 });
 
+app.get("/recipe/:recipeID", (req, res) => {
+  const { recipeID } = req.params;
+  fetch(
+    `https://api.edamam.com/api/recipes/v2/${recipeID}?type=public&app_id=1f1fe157&app_key=${process.env.APIKEY}`
+  )
+    .then(response => response.json())
+    .then(data => {
+      res.status(200).send(data);
+    })
+    .catch(err => res.status(400).send(err));
+});
+
 app.get("/", (req, res) => {
   res.status(200).send("Its working");
 });
