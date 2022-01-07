@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 
 const cors = require("cors");
@@ -10,7 +11,6 @@ app.use(cors());
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const API_KEY = process.env.APIKEY;
-require("dotenv").config();
 
 const register = require("./controllers/register");
 const signin = require("./controllers/signin");
@@ -78,6 +78,7 @@ app.get("/findrecipe/:foodtype", (req, res) => {
 
 app.get("/findcuisine/:foodtype", (req, res) => {
   const { foodtype } = req.params;
+  console.log(foodtype);
   fetch(
     `https://api.edamam.com/api/recipes/v2?type=public&q=${foodtype}&app_id=1f1fe157&app_key=${process.env.APIKEY}&cuisineType=${foodtype}&imageSize=REGULAR&dishType=Main%20course`
   )
